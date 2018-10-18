@@ -9,7 +9,8 @@ const webpackConfig = (mode) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
 
-  const publicPathRoot = isDev ? 'http://localhost:3000' : '';
+  const outputPath = isDev ? '/' : path.resolve(__dirname, 'public/dist');
+  const publicPath = isDev ? 'http://localhost:3000' : '/dist';
 
   let plugins = [
     new ManifestPlugin(),
@@ -34,8 +35,8 @@ const webpackConfig = (mode) => {
   return {
     entry: './src/index.js',
     output: {
-      path: path.resolve(__dirname, 'public/dist'),
-      publicPath: `${publicPathRoot}/dist/`,
+      path: `${outputPath}`,
+      publicPath: `${publicPath}`,
       filename: (isDev) ? '[name].js' : '[name].[contentHash].js',
       // Files created by loaders aren't affected.
       // In this case you would have to try the specific loader's available options.
@@ -117,9 +118,9 @@ const webpackConfig = (mode) => {
       ],
     },
     devServer: {
-      contentBase: path.join(__dirname, 'public'),
+      contentBase: path.join(__dirname, '/'),
       port: 3000,
-      publicPath: `${publicPathRoot}/dist/`,
+      publicPath: `${publicPath}`,
       hotOnly: true,
     },
     plugins,
